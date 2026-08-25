@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CTS, Communicate Through Spelling. iPad app by Autism is Biomedical</title>
+<meta name="description" content="CTS gives nonverbal children a voice. Spelling boards that grow, a picture Talk board, more than 40 real voices, 32 games and quizzes, calm music and binaural beats. Free for 30 days.">
+<meta property="og:title" content="CTS, Communicate Through Spelling">
+<meta property="og:description" content="Every child has something to say. Boards that grow, more than 40 voices, 32 games and quizzes. Free for 30 days on iPad.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05030F; --bg2:#0E0A24; --ink:#FFFFFF; --dim:rgba(255,255,255,.68);
+  --faint:rgba(255,255,255,.38); --gold:#FFDC40; --sky:#7CE7FF; --mint:#B6FF9C;
+  --lav:#D9B8FF; --rose:#FFB3C6; --peach:#FFB08C; --blue:#8FB3FF;
+  --card:rgba(255,255,255,.055); --line:rgba(255,255,255,.14); --r:22px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Lexend',system-ui,-apple-system,sans-serif;line-height:1.6;overflow-x:hidden}
+canvas#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1}
+section{max-width:1080px;margin:0 auto;padding:96px 24px}
+h1,h2,h3{line-height:1.15;font-weight:800}
+h2{font-size:clamp(30px,4.5vw,46px);margin-bottom:14px}
+.kicker{display:inline-block;font-size:14px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.lead{color:var(--dim);font-size:clamp(16px,2vw,19px);max-width:680px}
+.center{text-align:center}.center .lead{margin:0 auto}
+a{color:var(--sky)}
+
+/* nav */
+nav{position:sticky;top:0;z-index:50;background:rgba(5,3,15,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:12px 24px;overflow-x:auto;scrollbar-width:none}
+.nav-in::-webkit-scrollbar{display:none}
+.brand{font-weight:800;font-size:17px;margin-right:10px;white-space:nowrap;color:var(--ink);text-decoration:none}
+.brand span{color:var(--gold)}
+nav a.lnk{color:var(--dim);text-decoration:none;font-size:14.5px;font-weight:600;padding:8px 13px;border-radius:999px;white-space:nowrap;transition:.2s}
+nav a.lnk:hover{color:var(--ink)}
+nav a.lnk.on{background:var(--gold);color:#111}
+.nav-cta{margin-left:auto;background:var(--gold);color:#111!important;font-weight:700;padding:9px 18px;border-radius:999px;text-decoration:none;font-size:14.5px;white-space:nowrap}
+
+/* hero */
+.hero{min-height:calc(96vh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center;padding-top:60px}
+.hero h1{font-size:clamp(40px,7vw,84px);letter-spacing:-.02em}
+.hero h1 .g{color:var(--gold)}
+.hero .sub{font-size:clamp(18px,2.6vw,24px);color:var(--dim);margin:18px auto 8px;max-width:760px}
+.badge-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.cta{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#111;font-weight:800;font-size:18px;padding:16px 30px;border-radius:18px;text-decoration:none;box-shadow:0 10px 40px rgba(255,220,64,.25);transition:transform .15s}
+.cta:hover{transform:translateY(-2px)}
+.cta.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+.freeline{margin-top:22px;color:var(--mint);font-weight:600;font-size:16px}
+.hero-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;font-size:14px;color:var(--dim)}
+
+/* cards & layout */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:28px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}.grid4{grid-template-columns:repeat(2,1fr)}}
+.shot{width:100%;border-radius:18px;border:1px solid var(--line);display:block}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+/* video */
+.film{position:relative;border-radius:26px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.film video{width:100%;display:block}
+
+/* board demo */
+.demo{background:var(--bg2);border:1px solid var(--line);border-radius:26px;padding:26px}
+.size-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.size-btn{border:1.5px solid var(--line);background:transparent;color:var(--dim);font-family:inherit;font-weight:700;font-size:14px;padding:8px 16px;border-radius:999px;cursor:pointer;transition:.2s}
+.size-btn.on{background:var(--sky);border-color:var(--sky);color:#08222b}
+.wordbar{display:flex;align-items:center;gap:10px;background:#F6E7EA;border-radius:14px;padding:12px 16px;margin-bottom:16px}
+#wb{flex:1;min-height:34px;font-size:clamp(22px,4vw,34px);font-weight:800;color:#101226;letter-spacing:.12em;word-break:break-all}
+.wb-btn{border:0;font-family:inherit;font-weight:700;border-radius:12px;padding:10px 16px;cursor:pointer;font-size:14px}
+.wb-say{background:var(--gold);color:#111}.wb-del{background:#101226;color:#fff}
+#board{display:grid;gap:10px}
+.key{background:#101226;border:1px solid rgba(255,255,255,.16);border-radius:14px;color:#fff;font-family:inherit;font-size:clamp(20px,3.4vw,30px);font-weight:800;padding:16px 0;cursor:pointer;transition:transform .08s,background .15s}
+.key:active{transform:scale(.94);background:#26224d}
+.rainbow-note{display:flex;align-items:center;gap:10px;margin-top:16px;color:var(--dim);font-size:14.5px;flex-wrap:wrap}
+.rainbow-toggle{border:1.5px solid var(--line);background:transparent;color:var(--ink);font-family:inherit;font-weight:700;font-size:13.5px;border-radius:999px;padding:7px 14px;cursor:pointer}
+.rainbow-toggle.on{background:var(--lav);border-color:var(--lav);color:#241640}
+
+/* talk demo */
+.strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-height:56px;margin-bottom:16px}
+.strip .tok{background:#fff;color:#101226;font-weight:700;border-radius:10px;padding:6px 12px;font-size:16px}
+.strip .hint{color:var(--faint);font-size:15px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.tile{background:#151132;border:1px solid rgba(255,255,255,.14);border-radius:16px;color:#fff;font-family:inherit;padding:14px 8px;text-align:center;cursor:pointer;transition:transform .1s,border-color .2s;font-weight:600;font-size:15px}
+.tile:active{transform:scale(.95)}
+.tile em{display:block;font-style:normal;font-size:26px;margin-bottom:6px}
+.talk-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+
+/* voices */
+.voice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.voice{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer;transition:border-color .2s}
+.voice:hover{border-color:var(--gold)}
+.voice .pv{width:40px;height:40px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.voice b{display:block;font-size:15.5px}
+.voice small{color:var(--faint);font-size:12.5px}
+.voice .play{margin-left:auto;width:34px;height:34px;border-radius:50%;background:var(--gold);color:#111;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+
+/* games */
+.cat{padding:24px;border-radius:var(--r);border:1px solid var(--line)}
+.cat h3{font-size:19px;margin:10px 0 4px}
+.cat .n{font-size:38px;font-weight:800}
+.cat p{color:var(--dim);font-size:14px}
+.game-strip{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.gpill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:13.5px;color:var(--dim)}
+
+/* binaural */
+.tone-btn{border:0;font-family:inherit;font-weight:800;font-size:16px;border-radius:14px;padding:14px 24px;cursor:pointer;background:var(--sky);color:#08222b;transition:transform .15s}
+.tone-btn:hover{transform:translateY(-2px)}
+.tone-btn.stop{background:var(--rose);color:#3d0f1c}
+
+/* pricing */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
+@media(max-width:860px){.steps{grid-template-columns:1fr}}
+.step{position:relative;padding:30px 26px;border-radius:var(--r);border:1px solid var(--line);background:var(--card)}
+.step.hot{border-color:var(--gold);background:linear-gradient(180deg,rgba(255,220,64,.10),rgba(255,220,64,.02))}
+.step .tag{position:absolute;top:-13px;left:22px;background:var(--gold);color:#111;font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px;letter-spacing:.06em}
+.price{font-size:40px;font-weight:800;margin:8px 0 2px}
+.price s{color:var(--faint);font-size:22px;font-weight:600;margin-left:8px}
+.per{color:var(--faint);font-size:14px}
+.step ul{list-style:none;margin-top:14px}
+.step li{color:var(--dim);font-size:14.5px;padding:4px 0 4px 24px;position:relative}
+.step li:before{content:'✓';position:absolute;left:0;color:var(--mint);font-weight:800}
+
+/* footer */
+footer{border-top:1px solid var(--line);margin-top:40px}
+footer section{padding:56px 24px}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--faint);font-size:14px}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="wrap">
+
+<nav aria-label="Page sections">
+  <div class="nav-in">
+    <a class="brand" href="#top">CTS<span>.</span></a>
+    <a class="lnk" href="#film">Watch</a>
+    <a class="lnk" href="#boards">Boards</a>
+    <a class="lnk" href="#talk">Talk</a>
+    <a class="lnk" href="#voices">Voices</a>
+    <a class="lnk" href="#games">Games</a>
+    <a class="lnk" href="#calm">Calm</a>
+    <a class="lnk" href="#parents">Parents</a>
+    <a class="lnk" href="#pricing">Pricing</a>
+    <a class="nav-cta" href="#pricing">Try free</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <section style="padding-top:0;padding-bottom:0">
+    <div class="kicker">By Autism is Biomedical · for iPad</div>
+    <h1>Every child has<br>something <span class="g">to say.</span></h1>
+    <p class="sub">CTS, Communicate Through Spelling, turns an iPad into a calm, beautiful voice. Spelling boards that grow with your child, a picture Talk board, more than 40 real voices, and 32 games that make practice feel like play.</p>
+    <div class="badge-row">
+      <a class="cta" href="https://apps.apple.com/app/id6747241377" rel="noopener"> Download on the App Store</a>
+      <a class="cta ghost" href="#film">Watch it work ▸</a>
+    </div>
+    <div class="freeline">Free for 30 days. No card, no catch, the whole app.</div>
+    <div class="hero-chips">
+      <span class="chip">⌨️ 4 board sizes</span>
+      <span class="chip">🗣️ 40+ voices</span>
+      <span class="chip">🎮 32 games &amp; quizzes</span>
+      <span class="chip">🎵 Binaural beats</span>
+      <span class="chip">🔒 Parent gated</span>
+    </div>
+  </section>
+</header>
+
+<section id="film" class="center reveal">
+  <div class="kicker">3 minutes, 48 seconds</div>
+  <h2>Watch a child's day with CTS</h2>
+  <p class="lead" style="margin-bottom:34px">A real walkthrough, recorded inside the app. The boards, the Talk sentences, the voices, and the games, exactly as your child will find them.</p>
+  <div class="film">
+    <video controls preload="metadata" poster="assets/video_poster.jpg" playsinline>
+      <source src="assets/CTS_promo_v8_720.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<section id="boards" class="reveal">
+  <div class="kicker">Spelling</div>
+  <h2>Boards that grow with your child</h2>
+  <p class="lead" style="margin-bottom:30px">Start with 4 big letters. Move to 9. Then the full 26-letter letterboard, and a QWERTY keyboard when they are ready. Every letter speaks the moment it is tapped, and a typed word is read out loud.</p>
+  <div class="grid2">
+    <div class="demo" aria-label="Try the spelling board">
+      <div class="size-row" role="tablist">
+        <button class="size-btn" data-size="small">Small · 4</button>
+        <button class="size-btn" data-size="medium">Medium · 9</button>
+        <button class="size-btn on" data-size="full">Full · 26</button>
+        <button class="size-btn" data-size="qwerty">QWERTY</button>
+      </div>
+      <div class="wordbar">
+        <div id="wb" aria-live="polite"></div>
+        <button class="wb-btn wb-del" id="wbdel">⌫</button>
+        <button class="wb-btn wb-say" id="wbsay">🔊 Say Word</button>
+      </div>
+      <div id="board"></div>
+      <div class="rainbow-note">
+        <button class="rainbow-toggle" id="rainbow">🌈 Letter colors</button>
+        <span>This is live, tap the letters. In the app, every letter can wear its own color.</span>
+      </div>
+    </div>
+    <div>
+      <img class="shot" src="assets/shot_qwerty.jpg" alt="The QWERTY board in CTS with the word WATER typed" loading="lazy">
+      <p style="color:var(--faint);font-size:13.5px;margin-top:10px;text-align:center">The real thing: WATER, typed and spoken in the app.</p>
+    </div>
+  </div>
+</section>
+
+<section id="talk" class="reveal">
+  <div class="kicker">Talk</div>
+  <h2>Tap pictures, build real sentences</h2>
+  <p class="lead" style="margin-bottom:30px">The Talk board thinks ahead. Tap "I want", and it offers food, drink, comfort. Tap "I feel", and it offers feelings, and where it hurts. Each choice suggests the next natural words, then the whole sentence is spoken with one tap. Parents can add their own buttons with photos from the iPad.</p>
+  <div class="grid2">
+    <div>
+      <img class="shot" src="assets/shot_talk2.jpg" alt="The Talk board building the sentence I feel pain in my tooth" loading="lazy">
+      <p style="color:var(--faint);font-size:13.5px;margin-top:10px;text-align:center">"I feel, pain, in my tooth." From a child who could not say where it hurt.</p>
+    </div>
+    <div class="demo" aria-label="Try the Talk board">
+      <div class="strip" id="strip"><span class="hint">Tap tiles to build a sentence…</span></div>
+      <div class="tiles" id="tiles"></div>
+      <div class="talk-actions">
+        <button class="wb-btn wb-say" id="speak">🔊 Speak</button>
+        <button class="wb-btn wb-del" id="clear">Clear</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="voices" class="reveal center">
+  <div class="kicker">Voices</div>
+  <h2>More than 40 real voices</h2>
+  <p class="lead" style="margin:0 auto 34px">Warm women, calm men, real kids, and characters your child will love. Whoever sounds right becomes their voice, for every letter, word, and sentence. These samples are the actual app voices, press play.</p>
+  <div class="voice-grid" id="vgrid"></div>
+  <p style="color:var(--faint);font-size:14px;margin-top:22px">…and 34 more inside the app, from Grandpa Oxley to a tiny sparkly fairy.</p>
+</section>
+
+<section id="games" class="reveal">
+  <div class="kicker">Games &amp; Quizzes</div>
+  <h2>32 ways to practice, that feel like play</h2>
+  <p class="lead" style="margin-bottom:34px">Motor coordination for steady hands and calm focus. Spelling games that build words letter by letter. Thinking games with colors, numbers, and everyday sense. And quizzes where every right answer is spelled out loud, with a fun fact after. New content lands all the time.</p>
+  <div class="grid4">
+    <div class="cat" style="border-color:rgba(124,231,255,.4)"><div style="font-size:30px">🎯</div><div class="n" style="color:var(--sky)">10</div><h3>Motor training</h3><p>Catch the Letter, Marble Maze, Piano Stars, Galaxy Pong, Trace the Letter…</p></div>
+    <div class="cat" style="border-color:rgba(182,255,156,.4)"><div style="font-size:30px">🔤</div><div class="n" style="color:var(--mint)">10</div><h3>Spelling &amp; words</h3><p>Sight Words, Word Galaxy, Sentence Train, Match It, Rhyme Time…</p></div>
+    <div class="cat" style="border-color:rgba(255,176,140,.4)"><div style="font-size:30px">🧠</div><div class="n" style="color:var(--peach)">4</div><h3>Thinking &amp; math</h3><p>Color Galaxy, Number Galaxy, Help Me, Blue Box Math.</p></div>
+    <div class="cat" style="border-color:rgba(217,184,255,.4)"><div style="font-size:30px">🏆</div><div class="n" style="color:var(--lav)">8</div><h3>Quizzes</h3><p>Science, shapes, capitals, music, animals, algebra, words, math.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:30px">
+    <img class="shot" src="assets/shot_hub.jpg" alt="The Games and Quizzes hub in CTS" loading="lazy">
+    <img class="shot" src="assets/shot_home.jpg" alt="The calm CTS home screen with three big tiles" loading="lazy">
+  </div>
+  <div class="game-strip">
+    <span class="gpill">🎹 Piano Stars plays real songs</span>
+    <span class="gpill">🚂 Sentence Train builds real grammar</span>
+    <span class="gpill">🌀 Spiral Escape calms and focuses</span>
+    <span class="gpill">🧒 Help Me teaches empathy</span>
+    <span class="gpill">⭐ Star Sequence trains memory</span>
+  </div>
+</section>
+
+<section id="calm" class="reveal">
+  <div class="kicker">Calm</div>
+  <h2>Calm music and binaural beats</h2>
+  <div class="grid2">
+    <div>
+      <p class="lead">Three gentle, evolving soundscapes can play softly under the whole app. And for children who settle with them, CTS offers binaural beats: 10 Hz for calm, 40 Hz for focus, tuned with headphones in mind. Parents switch everything on or off in Settings.</p>
+      <div style="margin-top:26px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <button class="tone-btn" id="tone">🎧 Hear 10 seconds of a 10 Hz binaural beat</button>
+      </div>
+      <p style="color:var(--faint);font-size:13.5px;margin-top:12px">Headphones needed, the effect lives in the difference between your ears.</p>
+    </div>
+    <img class="shot" src="assets/shot_colors.jpg" alt="The letter color picker in CTS with rainbow letters" loading="lazy">
+  </div>
+</section>
+
+<section id="parents" class="reveal">
+  <div class="kicker">For parents</div>
+  <h2>Your child explores. You stay in control.</h2>
+  <div class="grid2">
+    <img class="shot" src="assets/shot_voices.jpg" alt="The voice picker in CTS" loading="lazy">
+    <div>
+      <p class="lead">Settings and History live behind a press-and-hold grown-up gate, so a child who taps anything lands on a learning game, never a settings page. Inside, you shape everything:</p>
+      <ul style="list-style:none;margin-top:18px">
+        <li style="padding:7px 0 7px 30px;position:relative;color:var(--dim)"><span style="position:absolute;left:0">🎨</span> Letter colors, board sizes, and the word bar</li>
+        <li style="padding:7px 0 7px 30px;position:relative;color:var(--dim)"><span style="position:absolute;left:0">🗣️</span> The voice, the speaking speed, and every sound</li>
+        <li style="padding:7px 0 7px 30px;position:relative;color:var(--dim)"><span style="position:absolute;left:0">📈</span> History with sessions, accuracy, and PDF export</li>
+        <li style="padding:7px 0 7px 30px;position:relative;color:var(--dim)"><span style="position:absolute;left:0">🧩</span> Custom Talk buttons with your own photos</li>
+        <li style="padding:7px 0 7px 30px;position:relative;color:var(--dim)"><span style="position:absolute;left:0">🔒</span> Links and purchases always behind the gate</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" class="reveal center">
+  <div class="kicker">Simple pricing</div>
+  <h2>Try everything free for 30 days</h2>
+  <p class="lead" style="margin:0 auto">The whole app, every board, voice, and game. Fall in love first. Then, if you subscribe during your free month, you keep the founding family price forever.</p>
+  <div class="steps">
+    <div class="step">
+      <div style="font-size:30px">🎁</div>
+      <h3 style="margin-top:8px">Days 1 to 30</h3>
+      <div class="price">Free</div>
+      <div class="per">nothing to enter, nothing to cancel</div>
+      <ul><li>The complete app</li><li>All 40+ voices</li><li>All 32 games &amp; quizzes</li></ul>
+    </div>
+    <div class="step hot">
+      <div class="tag">FOUNDING FAMILIES</div>
+      <div style="font-size:30px">💛</div>
+      <h3 style="margin-top:8px">Subscribe within your free month</h3>
+      <div class="price">$19.99<s>$29.99</s></div>
+      <div class="per">per year, locked in for life</div>
+      <ul><li>Price never rises for you</li><li>First month free on top</li><li>Cancel anytime in the App Store</li></ul>
+    </div>
+    <div class="step">
+      <div style="font-size:30px">⭐</div>
+      <h3 style="margin-top:8px">After the free month</h3>
+      <div class="price">$29.99</div>
+      <div class="per">per year</div>
+      <ul><li>Same complete app</li><li>New games and voices as they land</li><li>Cancel anytime</li></ul>
+    </div>
+  </div>
+  <div style="margin-top:40px">
+    <a class="cta" href="https://apps.apple.com/app/id6747241377" rel="noopener"> Start your free month</a>
+  </div>
+  <p style="color:var(--faint);font-size:13.5px;margin-top:16px">Billed by Apple to your Apple ID. Built by 2 fathers of autistic children.</p>
+</section>
+
+<footer>
+  <section class="center" style="padding-bottom:20px">
+    <h2 style="font-size:clamp(26px,4vw,38px)">Because spelling is communication.</h2>
+    <p class="lead" style="margin:0 auto 26px">CTS is part of the Autism is Biomedical family. We rely on your feedback, and we keep growing.</p>
+    <a class="cta" href="https://apps.apple.com/app/id6747241377" rel="noopener"> Download CTS for iPad</a>
+    <p style="color:var(--mint);font-weight:600;margin-top:14px">Android is on the way.</p>
+  </section>
+  <section style="padding-top:0">
+    <div class="foot">
+      <div>© Autism is Biomedical, Inc. · Farmington Hills, MI</div>
+      <div><a href="https://www.autismisbiomedical.com">autismisbiomedical.com</a></div>
+    </div>
+  </section>
+</footer>
+
+</div>
+<script>
+(function(){
+"use strict";
+var STATIC=/[?&]static=1/.test(location.search);
+if(STATIC){var st=document.createElement('style');st.textContent='.hero{min-height:auto!important;padding:70px 0!important}';document.head.appendChild(st);}
+/* ---------- starfield ---------- */
+var cv=document.getElementById('stars'),cx=cv.getContext('2d'),stars=[],W,H;
+var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function size(){W=cv.width=innerWidth;H=cv.height=innerHeight;stars=[];
+  for(var i=0;i<Math.min(160,W/9);i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,p:Math.random()*Math.PI*2,s:.004+Math.random()*.01});}
+size();addEventListener('resize',size);
+function tick(){cx.clearRect(0,0,W,H);
+  for(var i=0;i<stars.length;i++){var st=stars[i];st.p+=st.s;
+    cx.globalAlpha=.25+.55*Math.abs(Math.sin(st.p));cx.fillStyle='#fff';
+    cx.beginPath();cx.arc(st.x,st.y,st.r,0,7);cx.fill();}
+  cx.globalAlpha=1;if(!reduced)requestAnimationFrame(tick);}
+if(STATIC){reduced=true;}tick();
+
+/* ---------- reveal on scroll ---------- */
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(function(el){if(STATIC){el.classList.add('in');}else{io.observe(el);}});
+
+/* ---------- scrollspy ---------- */
+var links=[].slice.call(document.querySelectorAll('nav a.lnk'));
+var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'));});
+var spy=new IntersectionObserver(function(es){es.forEach(function(e){
+  if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id);});}
+});},{rootMargin:'-35% 0px -55% 0px'});
+secs.forEach(function(s){if(s)spy.observe(s);});
+
+/* ---------- speech helper ---------- */
+function say(t){try{var u=new SpeechSynthesisUtterance(t);u.rate=.95;u.pitch=1.05;
+  var vs=speechSynthesis.getVoices().filter(function(v){return v.lang.indexOf('en')===0;});
+  var pick=vs.filter(function(v){return /Samantha|Female|Karen|Ava/i.test(v.name);})[0]||vs[0];
+  if(pick)u.voice=pick;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+try{speechSynthesis.getVoices();}catch(e){}
+
+/* ---------- board demo ---------- */
+var LAYOUTS={small:['A','B','C','D'],medium:['A','B','C','D','E','F','G','H','I'],
+  full:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+  qwerty:'QWERTYUIOPASDFGHJKLZXCVBNM'.split('')};
+var COLS={small:4,medium:3,full:9,qwerty:10};
+var RAINBOW={A:'#FFDC40',B:'#4C8DFF',C:'#3DBE6B',E:'#FF6BAA',M:'#B44CFF',S:'#2BC5B4',R:'#FF8A3D',W:'#E5484D'};
+var board=document.getElementById('board'),wb=document.getElementById('wb'),rainbowOn=false,cur='full';
+function draw(){board.style.gridTemplateColumns='repeat('+COLS[cur]+',1fr)';board.innerHTML='';
+  LAYOUTS[cur].forEach(function(L){var b=document.createElement('button');b.className='key';b.textContent=L;
+    if(rainbowOn&&RAINBOW[L])b.style.color=RAINBOW[L];
+    b.onclick=function(){wb.textContent+=L;say(L);};board.appendChild(b);});}
+draw();
+document.querySelectorAll('.size-btn').forEach(function(b){b.onclick=function(){
+  document.querySelectorAll('.size-btn').forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on');cur=b.dataset.size;draw();};});
+document.getElementById('wbdel').onclick=function(){wb.textContent=wb.textContent.slice(0,-1);};
+document.getElementById('wbsay').onclick=function(){if(wb.textContent)say(wb.textContent.toLowerCase());};
+document.getElementById('rainbow').onclick=function(){rainbowOn=!rainbowOn;this.classList.toggle('on',rainbowOn);draw();};
+
+/* ---------- talk demo ---------- */
+var ROOT=[{e:'🙋',t:'I want',next:'wants'},{e:'💛',t:'I feel',next:'feels'},{e:'❗',t:'I need',next:'needs'},{e:'✅',t:'Yes'},{e:'❌',t:'No'},{e:'👋',t:'Hello'},{e:'🙏',t:'Thank you'},{e:'💧',t:'I’m thirsty'}];
+var SUB={wants:[{e:'🥤',t:'a drink',w:'a drink'},{e:'💧',t:'Water',w:'water'},{e:'🍎',t:'to eat',w:'to eat'},{e:'🤗',t:'a hug',w:'a hug'},{e:'🛏️',t:'to sleep',w:'to sleep'},{e:'🏠',t:'to go home',w:'to go home'}],
+  feels:[{e:'😊',t:'Happy',w:'happy'},{e:'😢',t:'Sad',w:'sad'},{e:'🤕',t:'Pain',w:'pain',next:'body'},{e:'😴',t:'Tired',w:'tired'},{e:'😤',t:'Frustrated',w:'frustrated'}],
+  needs:[{e:'🆘',t:'help',w:'help'},{e:'⏸️',t:'a break',w:'a break'},{e:'🚽',t:'the bathroom',w:'the bathroom'},{e:'🤫',t:'quiet',w:'quiet'}],
+  body:[{e:'🦷',t:'in my tooth',w:'in my tooth'},{e:'🤕',t:'in my head',w:'in my head'},{e:'🤢',t:'in my tummy',w:'in my tummy'},{e:'👂',t:'in my ear',w:'in my ear'}]};
+var strip=document.getElementById('strip'),tiles=document.getElementById('tiles'),sent=[];
+function renderStrip(){strip.innerHTML=sent.length?'':'<span class="hint">Tap tiles to build a sentence…</span>';
+  sent.forEach(function(w){var s=document.createElement('span');s.className='tok';s.textContent=w;strip.appendChild(s);});}
+function renderTiles(list){tiles.innerHTML='';list.forEach(function(it){
+  var b=document.createElement('button');b.className='tile';b.innerHTML='<em>'+it.e+'</em>'+it.t;
+  b.onclick=function(){var w=it.w||it.t;sent.push(w);say(w);renderStrip();
+    renderTiles(it.next?SUB[it.next]:ROOT);};tiles.appendChild(b);});}
+renderStrip();renderTiles(ROOT);
+document.getElementById('speak').onclick=function(){if(sent.length)say(sent.join(' '));};
+document.getElementById('clear').onclick=function(){sent=[];renderStrip();renderTiles(ROOT);};
+
+/* ---------- voice samples ---------- */
+var VOICES=[['jessica','👩','Jessica','Playful, bright and warm'],['sarah','👩🏼','Sarah','Reassuring and confident'],
+  ['george','👨','George','Warm British storyteller'],['grandma','👵','Grandma Maria','Warm, comforting grandma'],
+  ['rehan','🧒','Rehan','Warm young storyteller'],['jack','🏴‍☠️','Pirate Jack','Hoarse pirate captain'],
+  ['wizard','🧙','Wizard Daniel','Gruff old British wizard'],['teddy','🧸','Teddy Twinkle','Sweet little cartoon boy']];
+var vg=document.getElementById('vgrid'),playing=null;
+VOICES.forEach(function(v){var d=document.createElement('div');d.className='voice';d.setAttribute('role','button');d.tabIndex=0;
+  d.innerHTML='<div class="pv">'+v[1]+'</div><div style="text-align:left"><b>'+v[2]+'</b><small>'+v[3]+'</small></div><div class="play">▶</div>';
+  var a=new Audio('assets/voice_'+v[0]+'.mp3');
+  function go(){if(playing&&playing!==a){playing.pause();playing.currentTime=0;}
+    if(a.paused){a.play();playing=a;}else{a.pause();a.currentTime=0;}}
+  d.onclick=go;d.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};
+  vg.appendChild(d);});
+
+/* ---------- binaural demo ---------- */
+var AC=null,osc=[],toneBtn=document.getElementById('tone'),toneTimer=null;
+toneBtn.onclick=function(){
+  if(AC){stopTone();return;}
+  AC=new (window.AudioContext||window.webkitAudioContext)();
+  var g=AC.createGain();g.gain.setValueAtTime(0,AC.currentTime);
+  g.gain.linearRampToValueAtTime(.18,AC.currentTime+1.2);g.connect(AC.destination);
+  [[200,-1],[210,1]].forEach(function(p){
+    var o=AC.createOscillator(),pan=AC.createStereoPanner();
+    o.frequency.value=p[0];pan.pan.value=p[1];o.connect(pan);pan.connect(g);o.start();osc.push(o);});
+  toneBtn.textContent='◼ Stop';toneBtn.classList.add('stop');
+  toneTimer=setTimeout(stopTone,10000);
+};
+})();
+</script>
+</body>
+</html>
