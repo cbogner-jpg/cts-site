@@ -133,9 +133,26 @@ nav a.lnk.on{background:var(--gold);color:#111}
 .gpill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:13.5px;color:var(--dim)}
 
 /* binaural */
-.tone-btn{border:0;font-family:inherit;font-weight:800;font-size:16px;border-radius:14px;padding:14px 24px;cursor:pointer;background:var(--sky);color:#08222b;transition:transform .15s}
-.tone-btn:hover{transform:translateY(-2px)}
-.tone-btn.stop{background:var(--rose);color:#3d0f1c}
+.music-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.music-btn{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:16px 16px 18px;cursor:pointer;font-family:inherit;color:var(--ink);transition:border-color .2s,transform .1s}
+.music-btn:hover{border-color:var(--sky)}
+.music-btn.on{border-color:var(--sky);background:rgba(124,231,255,.10)}
+.music-btn .me{font-size:24px}
+.music-btn b{font-size:16px;font-weight:700}
+.music-btn small{color:var(--faint);font-size:12px}
+.music-btn .mbar{position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--sky);transition:width .1s linear}
+@media(max-width:520px){.music-row{grid-template-columns:1fr}}
+.beat-box{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.beat-head{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:16px}
+.switch{position:relative;display:inline-block;width:50px;height:28px;cursor:pointer}
+.switch input{opacity:0;width:0;height:0}
+.switch .track{position:absolute;inset:0;background:rgba(255,255,255,.16);border-radius:999px;transition:.2s}
+.switch .track:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked + .track{background:var(--sky)}
+.switch input:checked + .track:before{transform:translateX(22px)}
+.beat-choose{display:flex;gap:8px;margin-top:14px}
+.beat-opt{flex:1;border:1.5px solid var(--line);background:transparent;color:var(--dim);font-family:inherit;font-weight:700;font-size:13.5px;padding:9px 8px;border-radius:12px;cursor:pointer;transition:.2s}
+.beat-opt.on{background:var(--sky);border-color:var(--sky);color:#08222b}
 
 /* pricing */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
@@ -291,13 +308,25 @@ footer section{padding:56px 24px}
 <section id="calm" class="reveal">
   <div class="kicker">Calm</div>
   <h2>Calm music and binaural beats</h2>
-  <div class="grid2">
+  <p class="lead" style="margin-bottom:26px">Three gentle, evolving soundscapes play softly under the whole app. Press a track to hear 10 seconds, then add a binaural beat on top: 10 Hz to calm, 40 Hz to focus. Mix them, or turn the beat off. In the app, parents set it all in Settings.</p>
+  <div class="grid2" style="align-items:start">
     <div>
-      <p class="lead">Three gentle, evolving soundscapes can play softly under the whole app. And for children who settle with them, CTS offers binaural beats: 10 Hz for calm, 40 Hz for focus, tuned with headphones in mind. Parents switch everything on or off in Settings.</p>
-      <div style="margin-top:26px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-        <button class="tone-btn" id="tone">🎧 Hear 10 seconds of a 10 Hz binaural beat</button>
+      <div class="music-row" id="musicRow">
+        <button class="music-btn" data-track="calm"><span class="me">🌊</span><b>Calm</b><small>flowing &amp; warm</small><span class="mbar"></span></button>
+        <button class="music-btn" data-track="focus"><span class="me">🎯</span><b>Focus</b><small>steady &amp; clear</small><span class="mbar"></span></button>
+        <button class="music-btn" data-track="dream"><span class="me">🌙</span><b>Dream</b><small>soft &amp; drifting</small><span class="mbar"></span></button>
       </div>
-      <p style="color:var(--faint);font-size:13.5px;margin-top:12px">Headphones needed, the effect lives in the difference between your ears.</p>
+      <div class="beat-box">
+        <div class="beat-head">
+          <span>🎧 Binaural beat</span>
+          <label class="switch"><input type="checkbox" id="beatOn"><span class="track"></span></label>
+        </div>
+        <div class="beat-choose" id="beatChoose">
+          <button class="beat-opt on" data-hz="10">10 Hz · Calm</button>
+          <button class="beat-opt" data-hz="40">40 Hz · Focus</button>
+        </div>
+        <p style="color:var(--faint);font-size:13px;margin-top:10px">Headphones needed. The beat lives in the difference between your ears, and layers over whatever track is playing.</p>
+      </div>
     </div>
     <img class="shot" src="assets/shot_colors.jpg" alt="The letter color picker in CTS with rainbow letters" loading="lazy">
   </div>
@@ -410,6 +439,8 @@ function pickCalm(){var vs=speechSynthesis.getVoices().filter(function(v){return
   for(var i=0;i<pref.length;i++){var m=vs.filter(function(v){return pref[i].test(v.name);})[0];if(m)return m;}
   var f=vs.filter(function(v){return /female/i.test(v.name);})[0];
   return f||vs.filter(function(v){return v.lang==='en-US';})[0]||vs[0];}
+var LNAME={A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'jee',H:'aitch',I:'eye',J:'jay',K:'kay',L:'ell',M:'em',N:'en',O:'oh',P:'pee',Q:'cue',R:'ar',S:'ess',T:'tee',U:'you',V:'vee',W:'double-you',X:'ex',Y:'why',Z:'zee','0':'zero','1':'one','2':'two','3':'three','4':'four','5':'five','6':'six','7':'seven','8':'eight','9':'nine'};
+function sayLetter(ch){say(LNAME[ch]||ch);}
 function say(t){try{var u=new SpeechSynthesisUtterance(t);u.rate=.86;u.pitch=1.0;u.volume=1;
   _calmVoice=_calmVoice||pickCalm();
   if(_calmVoice)u.voice=_calmVoice;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
@@ -426,7 +457,7 @@ var board=document.getElementById('board'),wb=document.getElementById('wb'),rain
 function draw(){board.style.gridTemplateColumns='repeat('+COLS[cur]+',1fr)';board.innerHTML='';
   LAYOUTS[cur].forEach(function(L){var b=document.createElement('button');b.className='key';b.textContent=L;
     if(rainbowOn&&RAINBOW[L])b.style.color=RAINBOW[L];
-    b.onclick=function(){wb.textContent+=L;say(L);};board.appendChild(b);});}
+    b.onclick=function(){wb.textContent+=L;sayLetter(L);};board.appendChild(b);});}
 draw();
 document.querySelectorAll('.size-btn').forEach(function(b){b.onclick=function(){
   document.querySelectorAll('.size-btn').forEach(function(x){x.classList.remove('on');});
@@ -466,19 +497,29 @@ VOICES.forEach(function(v){var d=document.createElement('div');d.className='voic
   d.onclick=go;d.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};
   vg.appendChild(d);});
 
-/* ---------- binaural demo ---------- */
-var AC=null,osc=[],toneBtn=document.getElementById('tone'),toneTimer=null;
-toneBtn.onclick=function(){
-  if(AC){stopTone();return;}
-  AC=new (window.AudioContext||window.webkitAudioContext)();
-  var g=AC.createGain();g.gain.setValueAtTime(0,AC.currentTime);
-  g.gain.linearRampToValueAtTime(.18,AC.currentTime+1.2);g.connect(AC.destination);
-  [[200,-1],[210,1]].forEach(function(p){
-    var o=AC.createOscillator(),pan=AC.createStereoPanner();
-    o.frequency.value=p[0];pan.pan.value=p[1];o.connect(pan);pan.connect(g);o.start();osc.push(o);});
-  toneBtn.textContent='◼ Stop';toneBtn.classList.add('stop');
-  toneTimer=setTimeout(stopTone,10000);
-};
+/* ---------- calm music samples + mixable binaural beat ---------- */
+var AC=null,osc=[],beatGain=null,beatHz=10;
+function ac(){AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC;}
+var mAudio={};
+['calm','focus','dream'].forEach(function(k){var a=new Audio('assets/music_'+k+'.mp3');a.loop=true;a.preload='none';mAudio[k]=a;});
+var curTrack=null;
+var mbtns=[].slice.call(document.querySelectorAll('.music-btn'));
+function stopTrack(){if(curTrack){mAudio[curTrack].pause();mAudio[curTrack].currentTime=0;}curTrack=null;
+  mbtns.forEach(function(b){b.classList.remove('on');b.querySelector('.mbar').style.width='0';});}
+mbtns.forEach(function(b){var k=b.dataset.track;var bar=b.querySelector('.mbar');
+  mAudio[k].addEventListener('timeupdate',function(){if(curTrack===k)bar.style.width=(mAudio[k].currentTime/10*100)+'%';});
+  b.onclick=function(){ac();if(curTrack===k){stopTrack();return;}stopTrack();curTrack=k;b.classList.add('on');mAudio[k].currentTime=0;mAudio[k].play();};});
+var beatOn=document.getElementById('beatOn');
+function startBeat(){var a=ac();beatGain=a.createGain();beatGain.gain.setValueAtTime(0,a.currentTime);
+  beatGain.gain.linearRampToValueAtTime(.16,a.currentTime+1.0);beatGain.connect(a.destination);
+  var base=180;[[base,-1],[base+beatHz,1]].forEach(function(p){
+    var o=a.createOscillator(),pan=a.createStereoPanner();o.frequency.value=p[0];pan.pan.value=p[1];
+    o.connect(pan);pan.connect(beatGain);o.start();osc.push(o);});}
+function stopBeat(){osc.forEach(function(o){try{o.stop();}catch(e){}});osc=[];if(beatGain){try{beatGain.disconnect();}catch(e){}beatGain=null;}}
+beatOn.onchange=function(){if(beatOn.checked)startBeat();else stopBeat();};
+[].slice.call(document.querySelectorAll('.beat-opt')).forEach(function(o){o.onclick=function(){
+  document.querySelectorAll('.beat-opt').forEach(function(x){x.classList.remove('on');});o.classList.add('on');
+  beatHz=parseInt(o.dataset.hz,10);if(beatOn.checked){stopBeat();startBeat();}};});
 })();
 </script>
 </body>
