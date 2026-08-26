@@ -402,10 +402,18 @@ var spy=new IntersectionObserver(function(es){es.forEach(function(e){
 secs.forEach(function(s){if(s)spy.observe(s);});
 
 /* ---------- speech helper ---------- */
-function say(t){try{var u=new SpeechSynthesisUtterance(t);u.rate=.95;u.pitch=1.05;
-  var vs=speechSynthesis.getVoices().filter(function(v){return v.lang.indexOf('en')===0;});
-  var pick=vs.filter(function(v){return /Samantha|Female|Karen|Ava/i.test(v.name);})[0]||vs[0];
-  if(pick)u.voice=pick;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+var _calmVoice=null;
+function pickCalm(){var vs=speechSynthesis.getVoices().filter(function(v){return v.lang.indexOf('en')===0;});
+  if(!vs.length)return null;
+  // Prefer the warmest, most natural en-US female voices available per platform.
+  var pref=[/Samantha/i,/Ava\s*\(Premium\)/i,/\bAva\b/i,/Serena/i,/Allison/i,/Google US English/i,/Karen/i,/Moira/i,/Tessa/i];
+  for(var i=0;i<pref.length;i++){var m=vs.filter(function(v){return pref[i].test(v.name);})[0];if(m)return m;}
+  var f=vs.filter(function(v){return /female/i.test(v.name);})[0];
+  return f||vs.filter(function(v){return v.lang==='en-US';})[0]||vs[0];}
+function say(t){try{var u=new SpeechSynthesisUtterance(t);u.rate=.86;u.pitch=1.0;u.volume=1;
+  _calmVoice=_calmVoice||pickCalm();
+  if(_calmVoice)u.voice=_calmVoice;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+try{speechSynthesis.onvoiceschanged=function(){_calmVoice=pickCalm();};}catch(e){}
 try{speechSynthesis.getVoices();}catch(e){}
 
 /* ---------- board demo ---------- */
