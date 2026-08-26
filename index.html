@@ -31,6 +31,18 @@ h2{font-size:clamp(30px,4.5vw,46px);margin-bottom:14px}
 .center{text-align:center}.center .lead{margin:0 auto}
 a{color:var(--sky)}
 
+
+/* galactic newsflash ticker */
+.ticker{position:sticky;top:0;z-index:60;height:38px;overflow:hidden;background:linear-gradient(90deg,#1a0f3d,#0b2a4a 50%,#1a0f3d);border-bottom:1px solid rgba(255,220,64,.35);box-shadow:0 0 24px rgba(124,231,255,.25)}
+.ticker-track{display:flex;width:max-content;animation:tick 28s linear infinite;will-change:transform}
+.ticker-item{display:inline-flex;align-items:center;gap:12px;padding:0 42px;height:38px;white-space:nowrap;font-weight:700;font-size:14.5px;letter-spacing:.04em;color:#fff}
+.ticker-item .tag{background:var(--gold);color:#111;font-size:11px;font-weight:800;letter-spacing:.14em;padding:3px 9px;border-radius:999px}
+.ticker-item .hi{color:var(--sky)}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker:hover .ticker-track{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.ticker-track{animation:none}}
+nav{top:38px}
+
 /* nav */
 nav{position:sticky;top:0;z-index:50;background:rgba(5,3,15,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .nav-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:12px 24px;overflow-x:auto;scrollbar-width:none}
@@ -140,6 +152,7 @@ footer section{padding:56px 24px}
 <canvas id="stars"></canvas>
 <div class="wrap">
 
+<div class="ticker" aria-label="Newsflash"><div class="ticker-track"><span class="ticker-item"><span class="tag">🚀 GALACTIC NEWSFLASH</span> Just Days Away until we Launch this into <span class="hi">HyperSpace!</span> Available on all iPads. ✨</span><span class="ticker-item"><span class="tag">🚀 GALACTIC NEWSFLASH</span> Just Days Away until we Launch this into <span class="hi">HyperSpace!</span> Available on all iPads. ✨</span><span class="ticker-item"><span class="tag">🚀 GALACTIC NEWSFLASH</span> Just Days Away until we Launch this into <span class="hi">HyperSpace!</span> Available on all iPads. ✨</span><span class="ticker-item"><span class="tag">🚀 GALACTIC NEWSFLASH</span> Just Days Away until we Launch this into <span class="hi">HyperSpace!</span> Available on all iPads. ✨</span><span class="ticker-item"><span class="tag">🚀 GALACTIC NEWSFLASH</span> Just Days Away until we Launch this into <span class="hi">HyperSpace!</span> Available on all iPads. ✨</span><span class="ticker-item"><span class="tag">🚀 GALACTIC NEWSFLASH</span> Just Days Away until we Launch this into <span class="hi">HyperSpace!</span> Available on all iPads. ✨</span><span class="ticker-item"><span class="tag">🚀 GALACTIC NEWSFLASH</span> Just Days Away until we Launch this into <span class="hi">HyperSpace!</span> Available on all iPads. ✨</span><span class="ticker-item"><span class="tag">🚀 GALACTIC NEWSFLASH</span> Just Days Away until we Launch this into <span class="hi">HyperSpace!</span> Available on all iPads. ✨</span></div></div>
 <nav aria-label="Page sections">
   <div class="nav-in">
     <a class="brand" href="#top">CTS<span>.</span></a>
